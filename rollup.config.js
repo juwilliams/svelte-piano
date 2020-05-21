@@ -4,6 +4,16 @@ import commonjs from '@rollup/plugin-commonjs';
 import livereload from 'rollup-plugin-livereload';
 import { terser } from 'rollup-plugin-terser';
 
+// -- CUSTOM --
+//	alias allows for absolute path urls in import statements
+import alias from '@rollup/plugin-alias';
+const aliases = alias({
+	resolve: ['.svelte', '.js'], //optional, by default this will just look for .js files or folders
+	entries: [
+	  { find: 'components', replacement: 'src/components' }
+	]
+  });
+
 const production = !process.env.ROLLUP_WATCH;
 
 export default {
@@ -24,7 +34,7 @@ export default {
 				css.write('public/build/bundle.css');
 			}
 		}),
-
+		aliases,
 		// If you have external dependencies installed from
 		// npm, you'll most likely need these plugins. In
 		// some cases you'll need additional configuration -
